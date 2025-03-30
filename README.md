@@ -34,20 +34,6 @@ The project follows Clean Architecture principles and is organized as follows:
 - **E_Commerce.API**: Contains controllers, middleware, and API configuration
 - **E_Commerce.Tests**: Contains unit tests
 
-## API Endpoints
-
-### Customer Management
-
-- `GET /api/customers`: Retrieve a list of all customers
-- `GET /api/customers/{id}`: Retrieve details of a specific customer by ID
-- `POST /api/customers`: Create a new customer
-
-### Order Management
-
-- `POST /api/orders`: Create a new order
-- `GET /api/orders/{id}`: Retrieve details of a specific order
-- `POST /api/orders/UpdateOrderStatus/{id}`: Update the status of an order
-
 ## Getting Started
 
 ### Prerequisites
