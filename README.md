@@ -79,7 +79,7 @@ dotnet test
 
 ### Entity Relationship Diagram (ERD)
 
-![image](https://github.com/user-attachments/assets/d3d42b2f-3439-4cba-bb89-4d4319abf004)
+![image](https://github.com/user-attachments/assets/4e718cbc-5fb1-4aa2-a19f-cb73946eb264)
 
 
 ### Database Entities
