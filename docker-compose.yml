@@ -1,0 +1,69 @@
+version: '3.4'
+
+services:
+  # SQL Server service
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ecommerce-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=paSSword@1111
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "paSSword@1111" -Q "SELECT 1" || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # Database migrations service
+  db-init:
+    build:
+      context: .
+      dockerfile: Dockerfile.init
+    container_name: ecommerce-db-init
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ECommerceDb;User Id=sa;Password=paSSword@1111;TrustServerCertificate=True;
+    networks:
+      - ecommerce-network
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: >
+      bash -c "
+        echo 'Waiting for SQL Server to be ready...' &&
+        echo 'Running database migrations...' &&
+        cd /src/E_Commerce.API &&
+        dotnet ef database update --verbose
+      "
+
+  # E-Commerce API service
+  ecommerce-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ECommerceDb;User Id=sa;Password=paSSword@1111;TrustServerCertificate=True;
+    ports:
+      - "8080:80"
+    networks:
+      - ecommerce-network
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+volumes:
+  sqlserver_data: 

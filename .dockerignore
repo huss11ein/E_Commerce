@@ -1,0 +1,37 @@
+# Directories
+**/bin/
+**/obj/
+**/out/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/node_modules/
+**/TestResults/
+
+# Files
+**/*.user
+**/*.userosscache
+**/*.sln.docstates
+**/*.dbmdl
+**/*.jfm
+**/*.suo
+**/*.swp
+**/*.swo
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+.dockerignore
+docker-compose*
+Dockerfile*
+
+# Logs
+**/logs/
+**/*.log
+
+# Others
+**/.DS_Store
+**/*.pyc 
